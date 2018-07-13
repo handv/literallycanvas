@@ -57,6 +57,7 @@ module.exports = class LiterallyCanvas
     @redoStack = []
 
     @isDragging = false
+    @rotate = 0
     @position = {x: 0, y: 0}
     @scale = 1.0
     # GUI immediately replaces this value, but it's initialized so you can have
@@ -241,6 +242,23 @@ module.exports = class LiterallyCanvas
     @repaintAllLayers()
     @trigger('pan', {x: @position.x, y: @position.y})
 
+  setRotate: (rotate) ->
+    @rotate = rotate
+    @setPan(0, 0)
+    @keepPanInImageBounds()
+    @repaintAllLayers()
+    width = @backgroundShapes[0].image.width * @getRenderScale()
+    height = @backgroundShapes[0].image.height * @getRenderScale()
+    @backgroundShapes[0].image.src = @backgroundCanvas.toDataURL('image/png');
+    @backgroundShapes[0].image.width = height;
+    @backgroundShapes[0].image.height = width;
+    @rotate = 0
+    @repaintAllLayers();
+    if window.devicePixelRatio == 1
+      @setZoom(1)
+    @setPan(0, 0)
+    @trigger('drawingChange', {})
+
   zoom: (factor) ->
     newScale = @scale + factor
     newScale = Math.max(newScale, @config.zoomMin)
@@ -343,7 +361,7 @@ module.exports = class LiterallyCanvas
     return unless shapes.length
     drawShapes = =>
       for shape in shapes
-        renderShapeToContext(ctx, shape, {retryCallback})
+        renderShapeToContext(ctx, shape, {retryCallback}, @rotate)
     @clipped (=> @transformed(drawShapes, ctx)), ctx
 
   # Executes the given function after clipping the canvas to the image size.

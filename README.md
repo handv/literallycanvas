@@ -24,7 +24,7 @@ Along with the CSS, JS, and image assets, this is all it takes:
 Developing
 ----------
 
-Setup: `npm install --dev`
+Setup: `npm install --only=dev`
 
 Watching and serving: `gulp dev`
 

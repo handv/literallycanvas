@@ -9,7 +9,7 @@ defineCanvasRenderer = (shapeName, drawFunc, drawLatestFunc) ->
 
 
 noop = ->
-renderShapeToContext = (ctx, shape, opts={}) ->
+renderShapeToContext = (ctx, shape, opts={}, rotate) ->
   opts.shouldIgnoreUnsupportedShapes ?= false
   opts.retryCallback ?= noop
   opts.shouldOnlyDrawLatest ?= false
@@ -21,7 +21,10 @@ renderShapeToContext = (ctx, shape, opts={}) ->
       renderers[shape.className].drawLatestFunc(
         ctx, bufferCtx, shape, opts.retryCallback)
     else
-      renderers[shape.className].drawFunc(ctx, shape, opts.retryCallback)
+      if rotate
+        renderers[shape.className].drawFunc(ctx, shape, opts.retryCallback, rotate)
+      else
+        renderers[shape.className].drawFunc(ctx, shape, opts.retryCallback)
   else if opts.shouldIgnoreUnsupportedShapes
     console.warn "Can't render shape of type #{shape.className} to canvas"
   else
@@ -99,10 +102,14 @@ defineCanvasRenderer 'SelectionBox', do ->
     ctx.setLineDash([])
 
 
-defineCanvasRenderer 'Image', (ctx, shape, retryCallback) ->
+defineCanvasRenderer 'Image', (ctx, shape, retryCallback, rotate) ->
   if shape.image.width
     if shape.scale == 1
-      ctx.drawImage(shape.image, shape.x, shape.y)
+      if rotate == 1
+        ctx.rotate(90 * Math.PI / 180)
+        ctx.drawImage(shape.image, shape.x, shape.y - shape.image.height)
+      else 
+        ctx.drawImage(shape.image, shape.x, shape.y)
     else
       ctx.drawImage(
         shape.image, shape.x, shape.y,
