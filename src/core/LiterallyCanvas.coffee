@@ -243,6 +243,9 @@ module.exports = class LiterallyCanvas
     @trigger('pan', {x: @position.x, y: @position.y})
 
   setRotate: (rotate) ->
+    if window.devicePixelRatio > 1
+      alert('该功能暂不支持Retina屏幕')
+      return null
     @rotate = rotate
     @setPan(0, 0)
     @keepPanInImageBounds()
@@ -254,8 +257,6 @@ module.exports = class LiterallyCanvas
     @backgroundShapes[0].image.height = width;
     @rotate = 0
     @repaintAllLayers();
-    if window.devicePixelRatio == 1
-      @setZoom(1)
     @setPan(0, 0)
     @trigger('drawingChange', {})
 
