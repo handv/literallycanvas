@@ -1,4 +1,6 @@
-Literally Canvas v0.5.0
+Based on [Literally Canvas 0.5.0](https://github.com/literallycanvas/literallycanvas)
+
+Add Image rotate feature, but still have some bugs on Retina screen. The image  gets a little blurry while rotating on Retina screen.
 =======================
 
 Literally Canvas is an extensible, open source (BSD-licensed), HTML5 drawing

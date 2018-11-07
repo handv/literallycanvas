@@ -243,21 +243,30 @@ module.exports = class LiterallyCanvas
     @trigger('pan', {x: @position.x, y: @position.y})
 
   setRotate: (rotate) ->
-    if window.devicePixelRatio > 1
-      alert('该功能暂不支持Retina屏幕')
-      return null
     @rotate = rotate
     @setPan(0, 0)
     @keepPanInImageBounds()
     @repaintAllLayers()
-    width = @backgroundShapes[0].image.width * @getRenderScale()
-    height = @backgroundShapes[0].image.height * @getRenderScale()
-    @backgroundShapes[0].image.src = @backgroundCanvas.toDataURL('image/png');
-    @backgroundShapes[0].image.width = height;
-    @backgroundShapes[0].image.height = width;
-    @rotate = 0
-    @repaintAllLayers();
-    @setPan(0, 0)
+    width = @backgroundShapes[0].image.height
+    height = @backgroundShapes[0].image.width
+    tempImage = new Image()
+    tempImage.src = @backgroundCanvas.toDataURL('image/png')
+    renderScale = @getRenderScale()
+    self = @
+    tempImage.onload = () -> 
+      tempCanvas = document.createElement('canvas')
+      tempCanvas.width = width
+      tempCanvas.height = height
+      tempCtx = tempCanvas.getContext('2d')
+      tempCtx.drawImage(tempImage, 0, 0, width * renderScale, height * renderScale, 0, 0, width, height)
+      self.backgroundShapes[0].image.src = tempCanvas.toDataURL('image/png')
+      self.backgroundShapes[0].image.width = width
+      self.backgroundShapes[0].image.height = height
+      self.rotate = 0
+      self.repaintAllLayers()
+      self.setPan(0, 0)
+      tempCanvas = null
+
     @trigger('drawingChange', {})
 
   zoom: (factor) ->
