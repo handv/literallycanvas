@@ -267,11 +267,15 @@ module.exports = class LiterallyCanvas
       tempCtx.drawImage(tempImage, -height / 2, -width / 2)
       tempCtx.rotate(-Math.PI / 2)
       tempCtx.translate(-tempCanvas.width / 2, -tempCanvas.height / 2)
-      self.backgroundShapes[0].image.src = tempCanvas.toDataURL('image/png')
-      self.backgroundShapes[0].image.width = width
-      self.backgroundShapes[0].image.height = height
-      self.setPan(0, 0)
-      tempCanvas = null
+      tempImage2 = new Image();
+      tempImage2.src = tempCanvas.toDataURL('image/png');
+      tempImage2.width = width;
+      tempImage2.height = height;
+      tempImage2.onload = () ->
+        self.backgroundShapes[0].image = tempImage2;
+        self.setPan(0, 0);
+        undefined
+      tempCanvas = null;
 
     @trigger('drawingChange', {})
 
