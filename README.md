@@ -1,4 +1,16 @@
-Literally Canvas v0.5.2
+Based on [Literally Canvas 0.5.2](https://github.com/literallycanvas/literallycanvas)
+
+Add Image rotate feature, but still have some bugs on Retina screen. The image  gets a little blurry while rotating on Retina screen.
+
+### 旋转功能
+#### 原理是：
+每次旋转，都新创建一个canvas，在canvas上做旋转后把图片传给原来的canvas。
+#### 优点：
+- 减少原代码改动。
+- 无论是否视网膜屏，都不失真旋转
+#### 缺点：
+仅限旋转背景图
+
 =======================
 
 Literally Canvas is an extensible, open source (BSD-licensed), HTML5 drawing

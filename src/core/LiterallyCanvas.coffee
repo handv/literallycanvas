@@ -248,6 +248,33 @@ module.exports = class LiterallyCanvas
     newScale = Math.round(newScale * 100) / 100
     @setZoom(newScale)
 
+  setRotate: () ->
+    @setPan(0, 0)
+    @keepPanInImageBounds()
+    @repaintAllLayers()
+    width = @backgroundShapes[0].image.height
+    height = @backgroundShapes[0].image.width
+    tempImage = new Image()
+    tempImage.src = @getImage().toDataURL('image/png')
+    self = @
+    tempImage.onload = () -> 
+      tempCanvas = document.createElement('canvas')
+      tempCanvas.width = width
+      tempCanvas.height = height
+      tempCtx = tempCanvas.getContext('2d')
+      tempCtx.translate(tempCanvas.width / 2, tempCanvas.height / 2)
+      tempCtx.rotate(Math.PI / 2)
+      tempCtx.drawImage(tempImage, -height / 2, -width / 2)
+      tempCtx.rotate(-Math.PI / 2)
+      tempCtx.translate(-tempCanvas.width / 2, -tempCanvas.height / 2)
+      self.backgroundShapes[0].image.src = tempCanvas.toDataURL('image/png')
+      self.backgroundShapes[0].image.width = width
+      self.backgroundShapes[0].image.height = height
+      self.setPan(0, 0)
+      tempCanvas = null
+
+    @trigger('drawingChange', {})
+
   setZoom: (scale) ->
     center = @clientCoordsToDrawingCoords(@canvas.width / 2, @canvas.height / 2)
     oldScale = @scale

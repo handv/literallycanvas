@@ -5,6 +5,7 @@ createReactClass = require '../reactGUI/createReactClass-shim'
 ClearButton = React.createFactory require './ClearButton'
 UndoRedoButtons = React.createFactory require './UndoRedoButtons'
 ZoomButtons = React.createFactory require './ZoomButtons'
+RotateButton = React.createFactory require './RotateButton'
 
 {_} = require '../core/localization'
 ColorWell = React.createFactory require './ColorWell'
@@ -52,6 +53,7 @@ Picker = createReactClass
         UndoRedoButtons({lc, imageURLPrefix})
         ZoomButtons({lc, imageURLPrefix})
         ClearButton({lc})
+        RotateButton({lc})
       )
     )
   render: ->
