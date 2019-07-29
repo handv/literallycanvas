@@ -43,12 +43,7 @@ Picker = createReactClass
       ),
       if toolButtonComponents.length % 2 != 0
         (div {className: 'toolbar-button thin-button disabled'})
-      (div style: {
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-        },
+      (div {className: 'lc-picker-content'},
         ColorPickers({lc: @props.lc})
         UndoRedoButtons({lc, imageURLPrefix})
         ZoomButtons({lc, imageURLPrefix})
