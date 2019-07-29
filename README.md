@@ -33,6 +33,8 @@ Along with the CSS, JS, and image assets, this is all it takes:
 </script>
 ```
 
+## **Note:** node need  <= 6.x
+
 State of the project
 --------------------
 
@@ -54,3 +56,11 @@ in progress.
 
 To generate a production-ready `.js` file, run `gulp` and pull out either
 `lib/js/literallycanvas.js` or `lib/js/literallycanvas.min.js`.
+
+Publishing
+----------
+generate a production-ready `.js` file: `gulp`
+
+npm login: `npm login`
+
+publishing:`npm publish`
